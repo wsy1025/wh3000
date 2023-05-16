@@ -93,7 +93,7 @@ def search_all(fg=0):
     db.set_charset('utf8')
     cursor = db.cursor()
     ls = []
-    sql1 = f'select Name,Class_,Content from wh3001'
+    sql1 = f'select Name_,Class_,Content_ from wh3001'
     cursor.execute(sql1)
     results = cursor.fetchall()
     for result in results:
@@ -111,21 +111,46 @@ def search_all(fg=0):
         return res
     return ls
 
-def search_all_Class():
+def search_one(keyword,value=''):
     db = pymysql.connect(host='118.31.246.139', user='wh3000', password='dGhKcm8EBEMwAhSj', database='wh3000')
     db.set_charset('utf8')
     cursor = db.cursor()
-    ls = []
-    sql1 = f'select Class_ from wh3001'
-    cursor.execute(sql1)
-    results = cursor.fetchall()
-    for result in results:
-        ls.append(result[0])
-    ls = list(set(ls))
-    return ls
+    if keyword == 'Class_':
+        sql1 = f'select Class_,Name_,Content_ from wh3001 where {keyword} like "%{value}%"'
+        cursor.execute(sql1)
+        results = cursor.fetchall()
+        res = []
+        res.append({'name': '上一级', 'class_': '', 'a': '/sc?keyword=Class_'})
+        for result in results:
+            Class_ = result[0]
+            Name_ = result[1]
+            res.append({'name': Name_, 'class_': Class_,'a':'/sc?keyword=Name_&value='+Name_})
+
+        print(res)
+
+        return res
+
+    elif keyword == 'Name_':
+        sql1 = f'select Name_,Content_,Class_ from wh3001 where {keyword} like "%{value}%"'
+        cursor.execute(sql1)
+        results = cursor.fetchall()
+        res = []
+        # res.append({'name': '上一级', 'class_': '', 'a': '/sc?keyword=Class_'})
+        for result in results:
+            Name_ = result[0]
+            Content_ = result[1]
+            Class_ = result[2]
+            res.append({'name': Name_+'|上一级', 'content': Content_, 'class_': Class_,'a':'/sc?keyword=Class_&value='+Class_})
+
+        return res
+    else:
+        sql1 = f'select Name_,Content_ from wh3001 where {keyword} like "%{value}%"'
+
+# search_one('Name_')
 
 @app.route('/', methods=["GET", "POST"])
 def h_first():
+    return redirect('/sc?keyword=Class_')
     """
     0-文学篇
     1-文学篇 - 欧阳修
@@ -135,14 +160,19 @@ def h_first():
     if fg == None:
         fg = 0
     fg = int(fg)
-    return render_template('h_0.html', data=search_all((fg)))
+    return render_template('h_0.html', data=search_all(fg))
 
 @app.route('/sc', methods=["GET", "POST"])
 def sc():
-    word = request.args.get('word')
-    res = search_data(word)
+    '/sc?keyword=Class_&value=文学篇'
+    keyword = request.args.get('keyword')
+    value = request.args.get('value')
+    if value is None or value is 'null':
+        res = search_one(keyword)
+    else:
+        res = search_one(keyword, value)
     print(res)
-    return render_template('h_search.html', data=res)
+    return render_template('h_0.html', data=res)
 
 
 if __name__ == '__main__':

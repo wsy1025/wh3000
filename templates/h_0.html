@@ -6,17 +6,47 @@
     <script type="text/javascript" src="/static/jquery.min.js"></script>
 </head>
 <body>
+
+<div>
+    keyword
+    <select id="search_class" onchange="change_Name_()">
+        <option value="Class_">请选择</option>
+        <option value="Class_">Class_</option>
+        <option value="Name_">Name_</option>
+    </select>
+    <br>
+    value
+
+    <input type="text" id="search_name" value="">
+    <br>
+    <button id="btn_search">查找</button>
+</div>
+
+
 <div id="content">
     {% for l in data %}
-    {% if l.name|length>2 %}
-    <h5>{{l.class_}}-{{l.name}}</h5>
-    {%else%}
-    <h5>{{l.class_}}</h5>
+
+    {% if l.name|length>1 %}
+    <h5><a href="{{l.a}}">{{l.class_}}-{{l.name}}</a></h5>
     {%endif%}
+
     {% if l.content|length>10 %}
     <p>{{l.content}}</p>
     {%endif%}
+
     {%endfor%}
 </div>
 </body>
 </html>
+<script>
+    $("#btn_search").click(function () {
+        urll = '/sc?keyword=' + $("#search_class").val() + '&value=' + $("#search_name").val();
+        $(window).prop("location",urll);
+    })
+</script>
+
+<script>
+    function change_Name_(){
+        $("#search_class").val();
+    }
+</script>
