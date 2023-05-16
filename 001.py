@@ -120,14 +120,16 @@ def search_one(keyword,value=''):
         cursor.execute(sql1)
         results = cursor.fetchall()
         res = []
-        res.append({'name': '上一级', 'class_': '', 'a': '/sc?keyword=Class_'})
+        if value != "":
+            res.append({'name': '上一级', 'class_': '', 'a': '/sc?keyword=Class_'})
+        else:
+            res.append({'name': '- 首级 -- ', 'class_': '', 'a': '/sc?keyword=Class_'})
         for result in results:
             Class_ = result[0]
             Name_ = result[1]
             res.append({'name': Name_, 'class_': Class_,'a':'/sc?keyword=Name_&value='+Name_})
 
-        print(res)
-
+        # print(res)
         return res
 
     elif keyword == 'Name_':
@@ -135,10 +137,11 @@ def search_one(keyword,value=''):
         cursor.execute(sql1)
         results = cursor.fetchall()
         res = []
-        # res.append({'name': '上一级', 'class_': '', 'a': '/sc?keyword=Class_'})
+        res.append({'name': '一级', 'class_': '', 'a': '/sc?keyword=Class_'})
         for result in results:
             Name_ = result[0]
             Content_ = result[1]
+            print(Content_)
             Class_ = result[2]
             res.append({'name': Name_+'|上一级', 'content': Content_, 'class_': Class_,'a':'/sc?keyword=Class_&value='+Class_})
 
@@ -167,7 +170,7 @@ def sc():
     '/sc?keyword=Class_&value=文学篇'
     keyword = request.args.get('keyword')
     value = request.args.get('value')
-    if value is None or value is 'null':
+    if value is None or value == 'null':
         res = search_one(keyword)
     else:
         res = search_one(keyword, value)

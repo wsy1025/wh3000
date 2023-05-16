@@ -10,9 +10,9 @@
 <div>
     keyword
     <select id="search_class" onchange="change_Name_()">
-        <option value="Class_">请选择</option>
-        <option value="Class_">Class_</option>
-        <option value="Name_">Name_</option>
+<!--        <option value="Class_">请选择</option>-->
+        <option value="Class_"> 篇-- </option>
+        <option value="Name_"> 标题 </option>
     </select>
     <br>
     value
@@ -25,15 +25,12 @@
 
 <div id="content">
     {% for l in data %}
-
     {% if l.name|length>1 %}
     <h5><a href="{{l.a}}">{{l.class_}}-{{l.name}}</a></h5>
     {%endif%}
-
     {% if l.content|length>10 %}
-    <p>{{l.content}}</p>
+        <p>{{l.content}}</p>
     {%endif%}
-
     {%endfor%}
 </div>
 </body>
