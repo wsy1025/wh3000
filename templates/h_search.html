@@ -1,0 +1,10 @@
+    {% for l in data %}
+    {% if l.name|length>2 %}
+    <h5>{{l.class_}}-{{l.name}}</h5>
+    {%else%}
+    <h5>{{l.class_}}</h5>
+    {%endif%}
+    {% if l.content|length>10 %}
+    <p>{{l.content}}</p>
+    {%endif%}
+    {%endfor%}

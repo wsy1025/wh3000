@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/static/jquery.min.js"></script>
+</head>
+<body>
+<div id="content">
+    {% for l in data %}
+    {% if l.name|length>2 %}
+    <h5>{{l.class_}}-{{l.name}}</h5>
+    {%else%}
+    <h5>{{l.class_}}</h5>
+    {%endif%}
+    {% if l.content|length>10 %}
+    <p>{{l.content}}</p>
+    {%endif%}
+    {%endfor%}
+</div>
+</body>
+</html>

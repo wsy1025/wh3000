@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script type="text/javascript" src="/static/jquery.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <a href="/h_all"> 总 </a>
+    <a href="/h_name">名称</a>
+    <a href="/h_class">类别</a>
+    <input type="text" id="search_word">
+    <button id="btn_search">查找</button>
+</div>
+
+<div id="content">
+    {% for key,value in data.items() %}
+    <h1>{{ key }}</h1>
+    {% for l in value %}
+    <h4>{{l.name}}</h4>
+    <p>{{l.content}}</p>
+    <p>===============================</p>
+    {% endfor %}
+    {% endfor %}
+</div>
+
+</body>
+</html>
+
+<script>
+    $("#btn_search").click(function () {
+        urll = 'h_search?word=' + ($("#search_word").val());
+        $.get(urll, function (data) {
+            $("#content").html(data);
+        })
+    })
+</script>

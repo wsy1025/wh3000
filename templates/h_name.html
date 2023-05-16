@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="/static/jquery.min.js"></script>
+</head>
+<body>
+
+<div>
+    <a href="/"> 总 </a>
+    <input type="text" id="search_class">
+    <input type="text" id="search_name">
+    <button id="btn_search">查找</button>
+</div>
+
+<div id="content">
+    <li><a href="/"> 根目录 </a></li>
+    <br>
+    {% for key,value in data.items() %}
+    <script>
+        $("#content").append("<li><a href='?class={{key}}'>{{ key }}</a></li>");
+    </script>
+    <li><a></li>
+    {% for name in value %}
+    <script>
+        $("#content").append("<li><a href='?class={{key}}&name={{name.name}}'>{{key}} - {{ name.name }}</a></li>");
+    </script>
+    {{name.content}}
+    {% endfor %}
+    {% endfor %}
+</div>
+
+</body>
+</html>
+<script>
+    $("#btn_search").click(function () {
+        urll = '?class=' + $("#search_class").val() + '&name=' + $("#search_name").val();
+        $.get(urll, function (datas) {
+            $("#content").html(datas);
+            // $("#content").html('');
+        })
+    })
+</script>
